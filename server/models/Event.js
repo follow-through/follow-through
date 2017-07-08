@@ -1,17 +1,18 @@
 const mongoose = require('mongoose');
+const Post = require('./Post');
 
 const eventSchema = mongoose.Schema({
   users: {
-    type: [String],
+    type: [mongoose.Schema.ObjectId],
     required: true,
   },
   posts: {
-    type: [String],
-    required: true,
+    type: [mongoose.Schema.Post],
+    required: false,
   },
   post_date: {
     type: Date,
-    required: true,
+    required: false,
   },
   status: {
     type: String,

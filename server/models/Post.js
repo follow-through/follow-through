@@ -5,8 +5,12 @@ const postSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  owner: {
-    type: String,
+  ownerId: {
+    type: mongoose.Schema.ObjectId,
+    required: true,
+  },
+  eventId: {
+    type: mongoose.Schema.ObjectId,
     required: true,
   }
 });

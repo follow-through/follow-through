@@ -8,10 +8,13 @@ var passport = require('passport');
 var Strategy = require('passport-twitter').Strategy;
 const session = require('express-session');
 const { mongoose } = require('./mongoose');
+const { ObjectId } = require('mongoose').Types;
 
 const { consumerKey, consumerSecret } = require('./config');
 const oa = require('./oauth/twitter');
 const User = require('./models/User');
+const Event = require('./models/Event');
+const Post = require('./models/Post');
 
 passport.use(new Strategy({
     consumerKey,
@@ -26,11 +29,23 @@ passport.use(new Strategy({
       .then((user) => {
         if (user) {
           User.update(user, { token, tokenSecret })
-            .then(() => done(null, profile))
+            .then(() => {
+              profile.token = token;
+              done(null, profile)
+            })
             .catch(e => console.log(e));
         } else {
-          User.create({ username: profile.username, token, tokenSecret, events: [0] })
-            .then(() => done(null, profile))
+          User.create({
+              username: profile.username,
+              image: profile._json.profile_image_url,
+              token,
+              tokenSecret,
+              events: [0]
+            })
+            .then(() => {
+              profile.token = token;
+              done(null, profile)
+            })
             .catch(e => console.log(e));
         }
       }).catch(e => console.log(e));
@@ -59,37 +74,99 @@ app.use(session({ secret: 'keyboard cat', resave: true, saveUninitialized: true 
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.get('/', (req, res) => res.render('index'));
+app.get('/', (req, res) => res.sendFile(path.join(__dirname, './public/login.html')));
 
 app.get('/twitter/login', passport.authenticate('twitter'));
 
 app.get('/twitter/return', passport.authenticate('twitter', {
-  failureRedirect: '/'
+  failureRedirect: '/login'
 }), (req, res) => {
-  res.redirect('/event/:id');
+  res.cookie('token', req.user.token);
+  res.redirect('/eventPage.html');
 });
 
 app.get('/event/:id', (req, res) => {
+  if (!req.cookies.token) return redirect('/twitter/login');
+  let userId;
 
-  res.send(req.user);
+  User.findOne({ token: req.cookies.token })
+    .then((user) => {
+      if (!user) return redirect('/twitter/login');
+      userId = user._id;
+      console.log('11111111111111111111111111111111111111111111', user._id);
+      return Event.findOne({ _id: req.params.id })
+    })
+    .then((event) => {
+      if (!event) return;
 
+      console.log('222222222222222222222222', event);
+      const yourPost = event.posts.find(post => post.ownerId.toString() === userId.toString());
+      const theirPost = event.posts.find(post => post !== yourPost);
+      if (!yourPost || !theirPost) return console.log('POST NOT FOUND');
 
-  // User.findOne({ username: req.user.username })
-  //   .then((user) => {
-  //     oa.post(
-  //       'https://api.twitter.com/1.1/statuses/update.json',
-  //       user.token,
-  //       user.tokenSecret, { status: 'Jerry is SO wett' },
-  //       (test) => {
-  //         res.send(test);
-  //       }
-  //     )
-  //   }).catch(e => res.send(e));
+      const yourUserProfile = User.findOne({ _id: yourPost.ownerId });
+      const theirUserProfile = User.findOne({ _id: theirPost.ownerId });
 
+      return Promise.all([yourUserProfile, yourPost, theirUserProfile, theirPost]);
+    })
+    .then((values) => {
+      console.log('33333333333333333333', values);
+      res.send({
+        yours: { profile: values[0], post: values[1] },
+        theirs: { profile: values[2], post: values[3] },
+      });
+    })
+    .catch(e => console.log(e));
 });
 
+app.post('/event/:id', (req, res) => {
+  if (!req.cookies.token) return redirect('/twitter/login');
+  let userId
+
+  User.findOne({ token: req.cookies.token })
+    .then((user) => {
+      if (!user) return redirect('/twitter/login');
+      userId = user._id;
+
+      return Event.findOne({ _id: req.params.id });
+    })
+    .then((event) => {
+      const indexOfPostToChange = event.posts.findIndex(post => post.ownerId.toString() === userId.toString());
+      const indexToNotChange = event.posts.findIndex(post => post !== event.posts[indexOfPostToChange]);
+
+      const postToChange = event.posts[indexOfPostToChange];
+      postToChange.text = req.body.text;
+
+      const newPosts = [event.posts[indexToNotChange], postToChange];
+      return Event.findOneAndUpdate({_id: event._id}, { posts: newPosts });
+    })
+    .then((event) => {
+      res.status(200).send('Success!');
+    })
+    .catch(e => console.log(e));
+});
 
 app.listen(3000);
 
-
 module.exports = app;
+
+// Find user based on cookie
+// User.findOne({ username: req.user.username })
+//   .then((user) => {
+//     res.cookie('token', user.token);
+//     res.send(user);
+//   }).catch(e => res.send(e));
+
+
+// Make post
+// User.findOne({ username: req.user.username })
+//   .then((user) => {
+//     oa.post(
+//       'https://api.twitter.com/1.1/statuses/update.json',
+//       user.token,
+//       user.tokenSecret, { status: 'Jerry is SO wett' },
+//       (test) => {
+//         res.send(test);
+//       }
+//     )
+//   }).catch(e => res.send(e));

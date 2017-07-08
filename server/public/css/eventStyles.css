@@ -1,0 +1,21 @@
+#your-post, #their-post {
+  height: 400px;
+}
+
+.post-body {
+  margin-top: 10px;
+  font-size: 27px;
+  line-height: 32px;
+  letter-spacing: .01em;
+}
+
+.poster {
+  font-size: 18px;
+  font-weight: bold;
+  text-decoration: underline;
+  color: #000;
+}
+
+.poster:hover {
+  cursor: pointer;
+}

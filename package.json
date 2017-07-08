@@ -4,6 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
+    "watch": "nodemon server/server.js",
     "webpack": "webpack -w --progress --color"
   },
   "dependencies": {

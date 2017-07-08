@@ -11,7 +11,7 @@ const webpack = require('webpack');
 module.exports = {
   entry: ['webpack-hot-middleware/client', './src/index.js'],
   output: {
-    path: path.resolve('client'),
+    path: path.resolve('./server/public/js'),
     filename: 'bundle.js'
   },
   plugins: [new webpack.HotModuleReplacementPlugin()],

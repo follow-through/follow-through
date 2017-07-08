@@ -69,21 +69,25 @@ app.get('/twitter/login', passport.authenticate('twitter'));
 app.get('/twitter/return', passport.authenticate('twitter', {
   failureRedirect: '/'
 }), (req, res) => {
-  res.redirect('/event/0');
+  res.redirect('/event/:id');
 });
 
 app.get('/event/:id', (req, res) => {
-  User.findOne({ username: req.user.username })
-    .then((user) => {
-      oa.post(
-        'https://api.twitter.com/1.1/statuses/update.json',
-        user.token,
-        user.tokenSecret, { status: 'Jerry is SO wett' },
-        (test) => {
-          res.send(test);
-        }
-      )
-    }).catch(e => res.send(e));
+
+
+
+
+  // User.findOne({ username: req.user.username })
+  //   .then((user) => {
+  //     oa.post(
+  //       'https://api.twitter.com/1.1/statuses/update.json',
+  //       user.token,
+  //       user.tokenSecret, { status: 'Jerry is SO wett' },
+  //       (test) => {
+  //         res.send(test);
+  //       }
+  //     )
+  //   }).catch(e => res.send(e));
 
 });
 

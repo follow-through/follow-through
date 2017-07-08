@@ -66,7 +66,7 @@ app.get('/twitter/login', passport.authenticate('twitter'));
 app.get('/twitter/return', passport.authenticate('twitter', {
   failureRedirect: '/'
 }), (req, res) => {
-  res.redirect('/event');
+  res.render('index');
 });
 
 app.get('/eventPage', (req, res) => {

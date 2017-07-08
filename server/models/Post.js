@@ -12,7 +12,8 @@ const postSchema = mongoose.Schema({
   eventId: {
     type: mongoose.Schema.ObjectId,
     required: true,
-  }
+  },
+  agreed: false,
 });
 
 const Post = mongoose.model('Post', postSchema);

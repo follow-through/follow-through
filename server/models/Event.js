@@ -1,5 +1,8 @@
 const mongoose = require('mongoose');
 const Post = require('./Post');
+const User = require('./User');
+const oa = require('./../oauth/twitter');
+
 
 const eventSchema = mongoose.Schema({
   users: {
@@ -24,6 +27,25 @@ const eventSchema = mongoose.Schema({
   }
 });
 
+eventSchema.methods.makePosts = function () {
+  const event = this;
+  event.users.forEach((user) => {
+    User.findOne({ username: user.username })
+      .then((user) => {
+        oa.post(
+          'https://api.twitter.com/1.1/statuses/update.json',
+          user.token,
+          user.tokenSecret, { status: 'Jerry is SO wett' },
+          (test) => {
+            res.send(test);
+          }
+        )
+      }).catch(e => res.send(e));
+  })
+};
+
 const Event = mongoose.model('Event', eventSchema);
+
+
 
 module.exports = Event;

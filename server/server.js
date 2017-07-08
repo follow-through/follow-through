@@ -118,7 +118,7 @@ app.get('/event/:id', (req, res) => {
 
 app.post('/event/:id', (req, res) => {
   if (!req.cookies.token) return redirect('/twitter/login');
-  let userId
+  let userId;
 
   User.findOne({ token: req.cookies.token })
     .then((user) => {
@@ -132,12 +132,16 @@ app.post('/event/:id', (req, res) => {
       const indexToNotChange = event.posts.findIndex(post => post !== event.posts[indexOfPostToChange]);
 
       const postToChange = event.posts[indexOfPostToChange];
-      postToChange.text = req.body.text;
+
+      const reqKeys = Object.keys(req.body);
+      reqKeys.forEach(key => postToChange[key] = req.body[key]);
 
       const newPosts = [event.posts[indexToNotChange], postToChange];
       return Event.findOneAndUpdate({ _id: event._id }, { posts: newPosts, });
     })
     .then((event) => {
+      const agreed = event.posts.reduce((post, acc) => post.agreed && acc, true);
+      if (agreed) event.makePosts();
       res.status(200).send('Success!');
     })
     .catch(e => console.log(e));

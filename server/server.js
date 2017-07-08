@@ -93,13 +93,11 @@ app.get('/event/:id', (req, res) => {
     .then((user) => {
       if (!user) return redirect('/twitter/login');
       userId = user._id;
-      console.log('11111111111111111111111111111111111111111111', user._id);
       return Event.findOne({ _id: req.params.id })
     })
     .then((event) => {
       if (!event) return;
 
-      console.log('222222222222222222222222', event);
       const yourPost = event.posts.find(post => post.ownerId.toString() === userId.toString());
       const theirPost = event.posts.find(post => post !== yourPost);
       if (!yourPost || !theirPost) return console.log('POST NOT FOUND');
@@ -110,7 +108,6 @@ app.get('/event/:id', (req, res) => {
       return Promise.all([yourUserProfile, yourPost, theirUserProfile, theirPost]);
     })
     .then((values) => {
-      console.log('33333333333333333333', values);
       res.send({
         yours: { profile: values[0], post: values[1] },
         theirs: { profile: values[2], post: values[3] },
@@ -138,13 +135,15 @@ app.post('/event/:id', (req, res) => {
       postToChange.text = req.body.text;
 
       const newPosts = [event.posts[indexToNotChange], postToChange];
-      return Event.findOneAndUpdate({_id: event._id}, { posts: newPosts });
+      return Event.findOneAndUpdate({ _id: event._id }, { posts: newPosts, });
     })
     .then((event) => {
       res.status(200).send('Success!');
     })
     .catch(e => console.log(e));
 });
+
+
 
 app.listen(3000);
 

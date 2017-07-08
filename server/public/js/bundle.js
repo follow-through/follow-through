@@ -60,7 +60,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "4b480398d6688d552454"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "86b848a79772a0c37dda"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -24221,6 +24221,7 @@ var App = function (_React$Component) {
 
     _this.getEventData = _this.getEventData.bind(_this);
     _this.updatePostBody = _this.updatePostBody.bind(_this);
+    setInterval(_this.getEventData, 1000);
     return _this;
   }
 

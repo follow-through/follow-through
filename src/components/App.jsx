@@ -21,6 +21,7 @@ export default class App extends React.Component {
 
     this.getEventData = this.getEventData.bind(this);
     this.updatePostBody = this.updatePostBody.bind(this);
+    setInterval(this.getEventData, 1000);
   }
 
   render() {

@@ -343,7 +343,7 @@ html, meta:nth-of-type(1), style:nth-of-type(1):before, script:nth-of-type(1):be
   65%, 100% {
     -webkit-clip-path: polygon(125px 125px, 375px 125px, 125px -125px, -125px 125px, 125px 375px, 375px 125px);
             clip-path: polygon(125px 125px, 375px 125px, 125px -125px, -125px 125px, 125px 375px, 375px 125px);
-    border-color: #FFF;
+    border-color: #326782;
   }
 }
 @keyframes circle {
@@ -376,7 +376,7 @@ html, meta:nth-of-type(1), style:nth-of-type(1):before, script:nth-of-type(1):be
   65%, 100% {
     -webkit-clip-path: polygon(125px 125px, 375px 125px, 125px -125px, -125px 125px, 125px 375px, 375px 125px);
             clip-path: polygon(125px 125px, 375px 125px, 125px -125px, -125px 125px, 125px 375px, 375px 125px);
-    border-color: #FFF;
+    border-color: #326782;
   }
 }
 @-webkit-keyframes line-middle {
@@ -400,7 +400,7 @@ html, meta:nth-of-type(1), style:nth-of-type(1):before, script:nth-of-type(1):be
   65%, 100% {
     -webkit-transform: translateX(832.39816px);
             transform: translateX(832.39816px);
-    background: #FFF;
+    background: #326782;
   }
 }
 @keyframes line-middle {
@@ -424,7 +424,7 @@ html, meta:nth-of-type(1), style:nth-of-type(1):before, script:nth-of-type(1):be
   65%, 100% {
     -webkit-transform: translateX(832.39816px);
             transform: translateX(832.39816px);
-    background: #FFF;
+    background: #326782;
   }
 }
 @-webkit-keyframes line-top {
@@ -440,7 +440,7 @@ html, meta:nth-of-type(1), style:nth-of-type(1):before, script:nth-of-type(1):be
   65%, 100% {
     -webkit-transform: translateX(0) translateY(40px) rotate(-135deg);
             transform: translateX(0) translateY(40px) rotate(-135deg);
-    background: #FFF;
+    background: #326782;
   }
 }
 @keyframes line-top {
@@ -456,7 +456,7 @@ html, meta:nth-of-type(1), style:nth-of-type(1):before, script:nth-of-type(1):be
   65%, 100% {
     -webkit-transform: translateX(0) translateY(40px) rotate(-135deg);
             transform: translateX(0) translateY(40px) rotate(-135deg);
-    background: #FFF;
+    background: #326782;
   }
 }
 @-webkit-keyframes line-bottom {
@@ -472,7 +472,7 @@ html, meta:nth-of-type(1), style:nth-of-type(1):before, script:nth-of-type(1):be
   65%, 100% {
     -webkit-transform: translateX(0) translateY(-40px) rotate(135deg);
             transform: translateX(0) translateY(-40px) rotate(135deg);
-    background: #FFF;
+    background: #326782;
   }
 }
 @keyframes line-bottom {
@@ -488,7 +488,7 @@ html, meta:nth-of-type(1), style:nth-of-type(1):before, script:nth-of-type(1):be
   65%, 100% {
     -webkit-transform: translateX(0) translateY(-40px) rotate(135deg);
             transform: translateX(0) translateY(-40px) rotate(135deg);
-    background: #FFF;
+    background: #326782;
   }
 }
 @-webkit-keyframes background {
@@ -582,7 +582,7 @@ script:nth-of-type(1):after {
     position: absolute;
     bottom: 10px;
     right: 10px;
-    color: #FFF;
+    color: #326782;
     font-family: Arial;
     font-size: 11px;
   }

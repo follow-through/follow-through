@@ -10,12 +10,22 @@
 
 <body>
   <div id='root' class='container'>
+    
+  </div>
+  <!--<div id='root' class='container'>
     <div class='row'>
       <div id='yours' class='text-center col-xs-6'>
         <h2>Your Post</h2>
-        <div id='your-post' class='well'></div>
+        <div id='your-post' class='well'>
+          <div class='poster-info text-left'>
+            <img class='img img-circle' src='https://pbs.twimg.com/profile_images/825278175647195138/Y6JecgXV_normal.jpg'>
+            <a class='poster'>Adrian Roselli</a>
+          </div>
+
+          <p class='post-body'>Great time at @codesmith today!</p>
+        </div>
         <div class='text-left'>
-          <button id='edit' class='btn btn-danger'>Edit</button>
+          <button id='edit' class='btn btn-danger btn-lg' data-toggle="modal" data-target="#myModal">Edit</button>
         </div>
       </div>
       <div id='theirs' class='text-center col-xs-6'>
@@ -28,10 +38,31 @@
     </div>
   </div>
 
+  <! Button trigger modal -->
+
+
+   <!--Modal -->
+  <!--<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Edit what you will post</h4>
+        </div>
+        <div class="modal-body">
+          <textarea class='form-control'>Great time at @codesmith today!</textarea>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>-->
 
   <script src='./../node_modules/jquery/dist/jquery.min.js'></script>
-  <script src='./../node_modules/bootstrap/dist/js'></script>
-  <!--<script src='./bundle.js'></script>-->
+  <script src='./../node_modules/bootstrap/dist/js/bootstrap.min.js'></script>
+  <script src='./bundle.js'></script>
 </body>
 
 </html>

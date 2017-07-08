@@ -59,14 +59,18 @@ app.use(session({ secret: 'keyboard cat', resave: true, saveUninitialized: true 
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.get('/', (req, res) => res.render('index'));
+app.get('/', (req, res) => res.render('login'));
 
 app.get('/twitter/login', passport.authenticate('twitter'));
 
 app.get('/twitter/return', passport.authenticate('twitter', {
   failureRedirect: '/'
 }), (req, res) => {
-  res.redirect('/event/:id');
+  res.redirect('/event');
+});
+
+app.get('/eventPage', (req, res) => {
+  res.render('index');
 });
 
 app.get('/event/:id', (req, res) => {
@@ -85,9 +89,7 @@ app.post('/event', (req, res) => {
     }).catch(e => res.send(e));
 });
 
-
 app.listen(3000);
-
 
 module.exports = app;
 

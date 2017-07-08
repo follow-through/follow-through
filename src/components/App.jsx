@@ -34,7 +34,7 @@ export default class App extends React.Component {
         </div>
       </div>
     );
-  },
+  }
 
   getEventData() {
     // Request to server

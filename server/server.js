@@ -10,7 +10,7 @@ const session = require('express-session');
 const { mongoose } = require('./mongoose');
 
 const { consumerKey, consumerSecret } = require('./config');
-const oa = require('./twitter/tweet');
+const oa = require('./oauth/twitter');
 const User = require('./models/User');
 
 passport.use(new Strategy({
@@ -46,9 +46,6 @@ passport.deserializeUser(function (obj, cb) {
 
 var app = express();
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -74,7 +71,7 @@ app.get('/twitter/return', passport.authenticate('twitter', {
 
 app.get('/event/:id', (req, res) => {
 
-
+  res.send(req.user);
 
 
   // User.findOne({ username: req.user.username })

@@ -18,7 +18,7 @@ module.exports = {
   module: {
     loaders: [
       { test: /\.js$|\.jsx$/, loader: 'babel-loader', query: { presets: ['react', 'es2015'] } },
-      // { test: /\.css$|\.scss$/, loaders: ['style-loader', 'css-loader', 'sass-loader'] }
+      { test: /\.css$|\.scss$/, loaders: ['style-loader', 'css-loader', 'sass-loader'] }
     ],
   },
   // plugins: [HtmlWebpackPluginConfig]

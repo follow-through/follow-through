@@ -70,22 +70,19 @@ app.get('/twitter/return', passport.authenticate('twitter', {
 });
 
 app.get('/event/:id', (req, res) => {
+  User.findOne({ username: req.user.username })
+    .then((user) => {
+      res.cookie('token', user.token);
+      res.send(user);
+    }).catch(e => res.send(e));
+});
 
-  res.send(req.user);
-
-
-  // User.findOne({ username: req.user.username })
-  //   .then((user) => {
-  //     oa.post(
-  //       'https://api.twitter.com/1.1/statuses/update.json',
-  //       user.token,
-  //       user.tokenSecret, { status: 'Jerry is SO wett' },
-  //       (test) => {
-  //         res.send(test);
-  //       }
-  //     )
-  //   }).catch(e => res.send(e));
-
+app.post('/event', (req, res) => {
+  User.findOneAndUpdate({ token: req.cookies.token }, req.body)
+    .then((user) => {
+      console.log(`Successfully updated!
+        ${user}`);
+    }).catch(e => res.send(e));
 });
 
 
@@ -93,3 +90,16 @@ app.listen(3000);
 
 
 module.exports = app;
+
+
+// User.findOne({ username: req.user.username })
+//   .then((user) => {
+//     oa.post(
+//       'https://api.twitter.com/1.1/statuses/update.json',
+//       user.token,
+//       user.tokenSecret, { status: 'Jerry is SO wett' },
+//       (test) => {
+//         res.send(test);
+//       }
+//     )
+//   }).catch(e => res.send(e));

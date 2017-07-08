@@ -10,7 +10,7 @@ const session = require('express-session');
 const { mongoose } = require('./mongoose');
 
 const { consumerKey, consumerSecret } = require('./config');
-const oa = require('./twitter/tweet');
+const oa = require('./oauth/twitter');
 const User = require('./models/User');
 
 passport.use(new Strategy({
@@ -46,9 +46,6 @@ passport.deserializeUser(function (obj, cb) {
 
 var app = express();
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -69,21 +66,25 @@ app.get('/twitter/login', passport.authenticate('twitter'));
 app.get('/twitter/return', passport.authenticate('twitter', {
   failureRedirect: '/'
 }), (req, res) => {
-  res.redirect('/event/0');
+  res.redirect('/event/:id');
 });
 
 app.get('/event/:id', (req, res) => {
-  User.findOne({ username: req.user.username })
-    .then((user) => {
-      oa.post(
-        'https://api.twitter.com/1.1/statuses/update.json',
-        user.token,
-        user.tokenSecret, { status: 'Jerry is SO wett' },
-        (test) => {
-          res.send(test);
-        }
-      )
-    }).catch(e => res.send(e));
+
+  res.send(req.user);
+
+
+  // User.findOne({ username: req.user.username })
+  //   .then((user) => {
+  //     oa.post(
+  //       'https://api.twitter.com/1.1/statuses/update.json',
+  //       user.token,
+  //       user.tokenSecret, { status: 'Jerry is SO wett' },
+  //       (test) => {
+  //         res.send(test);
+  //       }
+  //     )
+  //   }).catch(e => res.send(e));
 
 });
 

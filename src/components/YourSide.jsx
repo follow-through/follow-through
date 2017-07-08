@@ -6,11 +6,11 @@ const YourSide = (props) => {
   return (
     <div id='yours' className='text-center col-xs-6'>
       <h2>Your Post</h2>
-      <YourPost name image body/>
+      <YourPost name={props.name} image={props.image} body={props.body}/>
       <div className='text-left'>
         <button id='edit' className='btn btn-danger btn-lg' data-toggle="modal" data-target="#myModal">Edit</button>
       </div>
-      <EditModal/>
+      <EditModal body={props.body} updateBody={props.updateBody}/>
     </div>
   )
 }

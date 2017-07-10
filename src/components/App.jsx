@@ -32,7 +32,7 @@ export default class App extends React.Component {
           <TheirSide name={this.state.theirs.name} image={this.state.theirs.image} body={this.state.theirs.body} />
         </div>
         <div className='row text-center'>
-          <button id='accept' className='btn btn-success'>Accept this agreement</button>
+          <button id='accept' className='btn btn-success' onClick={() => this.updatePostBody(null, true)}>Accept this agreement</button>
         </div>
       </div>
     );
@@ -66,11 +66,16 @@ export default class App extends React.Component {
     }
   }
 
-  updatePostBody(text) {
+  updatePostBody(text, agreed) {
     const xhr = new XMLHttpRequest;
     xhr.open('Post', 'http://localhost:3000/event/5961542d933efc06b4b52cb5');
     xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.send(JSON.stringify({ text }));
+
+    const sendData = {};
+    if (text) sendData.text = text;
+    sendData.agreed = agreed ? true : false;
+    
+    xhr.send(JSON.stringify(sendData));
 
     xhr.onreadystatechange = () => {
       if (xhr.readyState !== 4) return;

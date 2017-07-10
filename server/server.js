@@ -128,20 +128,28 @@ app.post('/event/:id', (req, res) => {
       return Event.findOne({ _id: req.params.id });
     })
     .then((event) => {
-      const indexOfPostToChange = event.posts.findIndex(post => post.ownerId.toString() === userId.toString());
-      const indexToNotChange = event.posts.findIndex(post => post !== event.posts[indexOfPostToChange]);
+      const userIndex = event.users.indexOf(ObjectId(userId));
+      let agreed = event.agreed;
 
+      if (req.body.text) agreed = [false, false]
+      else agreed[userIndex] = req.body.agreed ? true : false;
+
+      const indexOfPostToChange = event.posts.findIndex(post => post.ownerId.toString() === userId.toString());
+      const indexToNotChange = indexOfPostToChange === 0 ? 1 : 0;
       const postToChange = event.posts[indexOfPostToChange];
 
       const reqKeys = Object.keys(req.body);
+      const eventPostKeys = Object.keys(event.posts[indexOfPostToChange]);
+      reqKeys.filter((key) => eventPostKeys.includes(key));
       reqKeys.forEach(key => postToChange[key] = req.body[key]);
 
       const newPosts = [event.posts[indexToNotChange], postToChange];
-      return Event.findOneAndUpdate({ _id: event._id }, { posts: newPosts, });
+      return Event.findOneAndUpdate({ _id: event._id }, { posts: newPosts, agreed }, { new: true });
     })
     .then((event) => {
-      const agreed = event.posts.reduce((post, acc) => post.agreed && acc, true);
-      if (agreed) event.makePosts();
+      console.log(event.agreed);
+      if (event.agreed.reduce((acc, val) => acc && val, true)) event.makePosts();
+      console.log(event.agreed.reduce((acc, val) => acc && val, true))
       res.status(200).send('Success!');
     })
     .catch(e => console.log(e));

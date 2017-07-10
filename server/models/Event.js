@@ -29,23 +29,27 @@ const eventSchema = mongoose.Schema({
 
 eventSchema.methods.makePosts = function () {
   const event = this;
-  event.users.forEach((user) => {
-    User.findOne({ username: user.username })
-      .then((user) => {
-        oa.post(
-          'https://api.twitter.com/1.1/statuses/update.json',
-          user.token,
-          user.tokenSecret, { status: 'Jerry is SO wett' },
-          (test) => {
-            res.send(test);
-          }
-        )
-      }).catch(e => res.send(e));
-  })
+  const usersPromises = event.users.map((userId) => {
+    return new Promise((resolve, reject) => {
+      User.findOne({ _id: userId })
+        .then(user => resolve(user))
+        .catch(e => console.log(e));
+    });
+  });
+
+  Promise.all(usersPromises).then(users => {
+    users.forEach((user) => {
+      const status = event.posts.find(post => post.ownerId.toString() === user._id.toString()).text;
+      oa.post(
+        'https://api.twitter.com/1.1/statuses/update.json',
+        user.token,
+        user.tokenSecret, { status },
+        (e) => console.log(e),
+      );
+    });
+  });
 };
 
 const Event = mongoose.model('Event', eventSchema);
-
-
 
 module.exports = Event;
